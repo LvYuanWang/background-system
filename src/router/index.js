@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -59,7 +60,7 @@ export const constantRoutes = [
         name: 'PersonalSetting',
         hidden: true,
         component: () => import('@/views/personalSetting/index'),
-        meta: { title: "个人中心", auth: true }
+        meta: { title: '个人中心', auth: true }
       }
     ]
   },

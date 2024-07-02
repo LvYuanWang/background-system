@@ -3,12 +3,12 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
+// import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login'] // no redirect whitelist 白名单
+// const whiteList = ['/login'] // no redirect whitelist 白名单
 
 router.beforeEach(async (to, from, next) => {
   // start progress bar
@@ -20,39 +20,39 @@ router.beforeEach(async (to, from, next) => {
   // determine whether the user has logged in
   // const hasToken = getToken()
 
-  const hasGetUserInfo = store.getters.user;
+  const hasGetUserInfo = store.getters.user
 
   if (to.meta.auth) {
     // 需要权限
     if (hasGetUserInfo) {
       // 有用户信息
-      next();
+      next()
     } else {
       // 没有用户信息
-      const hasToken = localStorage.getItem('adminToken');
+      const hasToken = localStorage.getItem('adminToken')
       if (hasToken) {
         try {
-          await store.dispatch('user/getInfo');
-          next();
+          await store.dispatch('user/getInfo')
+          next()
         } catch (error) {
-          await store.dispatch('user/resetToken');
-          Message.error(error || "登录信息已过期，请重新登录");
-          next(`/login?redirect=${to.path}`); // 重定向到登录页
-          NProgress.done();
+          await store.dispatch('user/resetToken')
+          Message.error(error || '登录信息已过期，请重新登录')
+          next(`/login?redirect=${to.path}`) // 重定向到登录页
+          NProgress.done()
         }
       } else {
-        next(`/login?redirect=${to.path}`); // 重定向到登录页
-        NProgress.done();
+        next(`/login?redirect=${to.path}`) // 重定向到登录页
+        NProgress.done()
       }
     }
   } else {
     // 不需要权限
     if (to.path === '/login' && hasGetUserInfo) {
       // 是登录页面
-      next({ path: '/' });
+      next({ path: '/' })
     } else {
       // 不是登录页面
-      next();
+      next()
     }
     NProgress.done()
   }

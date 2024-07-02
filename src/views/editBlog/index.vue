@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import EditArticle from "@/components/EditArticle.vue";
+import EditArticle from '@/components/EditArticle.vue'
 export default {
   components: {
-    EditArticle,
-  },
-};
+    EditArticle
+  }
+}
 </script>

@@ -92,9 +92,9 @@
 </template>
 
 <script>
-import * as commentApi from "@/api/comment";
-import { BaseUrl } from "@/urlConfig";
-import { formatDate } from "@/utils/tools";
+import * as commentApi from '@/api/comment'
+import { BaseUrl } from '@/urlConfig'
+import { formatDate } from '@/utils/tools'
 export default {
   data() {
     return {
@@ -104,69 +104,69 @@ export default {
       currentPage: 1, // 当前页码,默认进来是第一页
       totalPage: 0, // 总页数
       count: 0, // 总条数
-      pageCurrentPage: 1, // 分页栏的当前页码
-    };
+      pageCurrentPage: 1 // 分页栏的当前页码
+    }
   },
   created() {
-    this.fetchCommentData();
+    this.fetchCommentData()
   },
   methods: {
     async fetchCommentData() {
-      this.listLoadin = true;
+      this.listLoadin = true
       const { data } = await commentApi.getCommentList(
         this.currentPage,
         this.eachPage
-      );
+      )
       data.rows.forEach((item) => {
-        item.avatar = BaseUrl + item.avatar;
-        item.createDate = formatDate(item.createDate);
-      });
-      this.commentData = data.rows;
-      this.count = data.total; // 计算总条数
-      this.totalPage = Math.ceil(this.count / this.eachPage); // 计算总页数
-      this.listLoading = false;
+        item.avatar = BaseUrl + item.avatar
+        item.createDate = formatDate(item.createDate)
+      })
+      this.commentData = data.rows
+      this.count = data.total // 计算总条数
+      this.totalPage = Math.ceil(this.count / this.eachPage) // 计算总页数
+      this.listLoading = false
       if (this.currentPage > this.totalPage) {
-        this.currentPage = this.totalPage;
-        this.fetchCommentData();
+        this.currentPage = this.totalPage
+        this.fetchCommentData()
       }
     },
     deleteCommentClickHandle(id) {
-      this.$confirm("是否永久删除该评论?", "温馨提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm('是否永久删除该评论?', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           commentApi.deleteComment(id).then(() => {
-            this.fetchCommentData();
-            this.$message.success("删除成功!");
-          });
+            this.fetchCommentData()
+            this.$message.success('删除成功!')
+          })
         })
         .catch(() => {
-          this.$message.info("已取消删除");
-        });
+          this.$message.info('已取消删除')
+        })
     },
     // 上一页
     commentPrevClickHandle() {
-      this.currentPage -= 1;
+      this.currentPage -= 1
     },
     // 下一页
     commentNextClickHandle() {
-      this.currentPage += 1;
+      this.currentPage += 1
     },
     // 设置当前页码
     commentCurrentChangeHandle(page) {
-      this.currentPage = page;
+      this.currentPage = page
     },
     // 设置每页显示的条数
     commentSizeChangeHandle(size) {
-      this.currentPage = 1;
-      this.pageCurrentPage = 1;
-      this.eachPage = ~~size;
-      this.fetchCommentData();
-    },
-  },
-};
+      this.currentPage = 1
+      this.pageCurrentPage = 1
+      this.eachPage = ~~size
+      this.fetchCommentData()
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

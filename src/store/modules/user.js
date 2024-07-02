@@ -1,5 +1,13 @@
-import { loginApi, logout, getInfoApi } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import {
+  loginApi,
+  // logout,
+  getInfoApi
+} from '@/api/user'
+import {
+  // getToken,
+  // setToken,
+  removeToken
+} from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -24,7 +32,7 @@ const mutations = {
   //   state.avatar = avatar
   // },
   SET_USER: (state, user) => {
-    state.user = user;
+    state.user = user
   }
 }
 
@@ -37,13 +45,13 @@ const actions = {
         const { data } = response
         if (data) {
           // 说明data里面有数据
-          commit('SET_USER', data);
+          commit('SET_USER', data)
           resolve()
           // commit('SET_TOKEN', data.token)
           // setToken(data.token)
         } else {
           // 说明data里面没有数据
-          reject(response);
+          reject(response)
         }
       }).catch(error => {
         reject(error)
@@ -57,15 +65,15 @@ const actions = {
       getInfoApi().then(response => {
         if (typeof response === 'string') {
           // 是字符串,说明是错误信息
-          const res = JSON.parse(response);
+          const res = JSON.parse(response)
           if (res.code === 401) {
-            reject(res.msg);
+            reject(res.msg)
           }
         } else {
           // 是对象,说明是用户信息
-          const { data } = response;
-          commit('SET_USER', data);
-          resolve();
+          const { data } = response
+          commit('SET_USER', data)
+          resolve()
         }
         // if (!data) {
         //   return reject('Verification failed, please Login again.')

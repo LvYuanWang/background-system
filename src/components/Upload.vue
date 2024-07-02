@@ -15,29 +15,30 @@
 </template>
 
 <script>
-import { BaseUrl } from "@/urlConfig.js";
+import { BaseUrl } from '@/urlConfig.js'
 export default {
-  props: ["uploadTitle", "value"],
+  props: ['uploadTitle', 'value'],
   computed: {
     imageUrl() {
       if (this.value) {
-        return this.value;
+        return this.value
       }
+      return ''
     },
     getHeaders() {
       return {
-        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-      };
-    },
+        Authorization: `Bearer ${localStorage.getItem('adminToken')}`
+      }
+    }
   },
   methods: {
     handleAvatarSuccess(res) {
       if (!res.code && res.data) {
-        this.$emit("input", BaseUrl + res.data);
+        this.$emit('input', BaseUrl + res.data)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

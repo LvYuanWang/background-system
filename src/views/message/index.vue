@@ -85,9 +85,9 @@
 </template>
 
 <script>
-import * as messageApi from "@/api/message";
-import { BaseUrl } from "@/urlConfig";
-import { formatDate } from "@/utils/tools";
+import * as messageApi from '@/api/message'
+import { BaseUrl } from '@/urlConfig'
+import { formatDate } from '@/utils/tools'
 export default {
   data() {
     return {
@@ -97,70 +97,70 @@ export default {
       currentPage: 1, // 当前页码
       totalPage: 0, // 总页数
       count: 0, // 总条数
-      pageCurrentPage: 1, // 分页栏的当前页码
-    };
+      pageCurrentPage: 1 // 分页栏的当前页码
+    }
   },
   created() {
-    this.fetchMessageList();
+    this.fetchMessageList()
   },
   methods: {
     async fetchMessageList() {
-      this.listLoading = true;
+      this.listLoading = true
       const { data } = await messageApi.getMessageList(
         this.currentPage,
         this.eachPage
-      );
+      )
       data.rows.forEach((item) => {
-        item.avatar = BaseUrl + item.avatar;
-        item.createDate = formatDate(item.createDate);
-      });
-      this.messageListData = data.rows;
-      this.count = data.total;
-      this.totalPage = Math.ceil(this.count / this.eachPage);
-      this.listLoading = false;
+        item.avatar = BaseUrl + item.avatar
+        item.createDate = formatDate(item.createDate)
+      })
+      this.messageListData = data.rows
+      this.count = data.total
+      this.totalPage = Math.ceil(this.count / this.eachPage)
+      this.listLoading = false
       if (this.currentPage > this.totalPage) {
-        this.currentPage = this.totalPage;
-        this.fetchMessageList();
+        this.currentPage = this.totalPage
+        this.fetchMessageList()
       }
     },
     // 上一页
     prevMessageClickHandle() {
-      this.currentPage -= 1;
+      this.currentPage -= 1
     },
     // 下一页
     nextMessageClickHandle() {
-      this.currentPage += 1;
+      this.currentPage += 1
     },
     // 翻页
     currentMessageChangeHandle(newPage) {
-      this.currentPage = newPage;
-      this.fetchMessageList();
+      this.currentPage = newPage
+      this.fetchMessageList()
     },
     // 设置分页栏的当前页码
     messageSizeChangeHandle(newSize) {
-      this.eachPage = newSize;
-      this.currentPage = 1;
-      this.fetchMessageList();
+      this.eachPage = newSize
+      this.currentPage = 1
+      this.fetchMessageList()
     },
     // 删除留言
     deleteMessageClickHandle(id) {
-      this.$confirm("此操作将永久删除该留言,是否继续?", "是否删除该留言", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm('此操作将永久删除该留言,是否继续?', '是否删除该留言', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           messageApi.deleteMessage(id).then(() => {
-            this.fetchMessageList();
-            this.$message.success("删除成功!");
-          });
+            this.fetchMessageList()
+            this.$message.success('删除成功!')
+          })
         })
         .catch(() => {
-          this.$message.info("已取消删除");
-        });
-    },
-  },
-};
+          this.$message.info('已取消删除')
+        })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -57,67 +57,67 @@
 </template>
 
 <script>
-import "@toast-ui/editor/dist/toastui-editor.css";
-import { Editor } from "@toast-ui/vue-editor";
-import Upload from "@/components/Upload.vue";
-import { getBlogType } from "@/api/blogType.js";
-import { BaseUrl } from "@/urlConfig.js";
-import { addBlogApi, editBlogApi, findeOneBlogApi } from "@/api/blog.js";
-import "@toast-ui/editor/dist/i18n/zh-cn";
+import '@toast-ui/editor/dist/toastui-editor.css'
+import { Editor } from '@toast-ui/vue-editor'
+import Upload from '@/components/Upload.vue'
+import { getBlogType } from '@/api/blogType.js'
+import { BaseUrl } from '@/urlConfig.js'
+import { addBlogApi, editBlogApi, findeOneBlogApi } from '@/api/blog.js'
+import '@toast-ui/editor/dist/i18n/zh-cn'
 export default {
-  props: ["mode"],
+  props: ['mode'],
   components: {
     editor: Editor,
-    Upload,
+    Upload
   },
   data() {
     return {
       form: {
-        title: "",
-        editorText: "",
-        description: "",
-        thumb: "",
-        categoryId: "",
+        title: '',
+        editorText: '',
+        description: '',
+        thumb: '',
+        categoryId: ''
       },
       blogTypeArr: [],
       editorOptions: {
-        language: "zh-CN",
+        language: 'zh-CN'
       },
-      btnContent: "发布文章",
-    };
+      btnContent: '发布文章'
+    }
   },
   async created() {
     // 获取分类Name
-    const blogTypeData = await getBlogType();
-    this.blogTypeArr = blogTypeData.data;
+    const blogTypeData = await getBlogType()
+    this.blogTypeArr = blogTypeData.data
 
-    if (this.mode === "edit") {
+    if (this.mode === 'edit') {
       // 获取文章内容
-      let { data } = await findeOneBlogApi(this.$route.params.id);
-      data.thumb = BaseUrl + data.thumb;
-      this.form = data;
-      this.form.categoryId = data.category === null ? "" : data.category.id;
-      this.$refs.toastuiEditor.invoke("setHTML", data.htmlContent);
-      this.btnContent = "编辑文章";
+      const { data } = await findeOneBlogApi(this.$route.params.id)
+      data.thumb = BaseUrl + data.thumb
+      this.form = data
+      this.form.categoryId = data.category === null ? '' : data.category.id
+      this.$refs.toastuiEditor.invoke('setHTML', data.htmlContent)
+      this.btnContent = '编辑文章'
     }
   },
   methods: {
     // 发布文章
     addEditorHandle() {
-      const html = this.$refs.toastuiEditor.invoke("getHTML");
-      const markdown = this.$refs.toastuiEditor.invoke("getMarkdown");
+      const html = this.$refs.toastuiEditor.invoke('getHTML')
+      const markdown = this.$refs.toastuiEditor.invoke('getMarkdown')
       /*
       发布文章的时候需要的参数
       Body:
       {
-        "title": "string",
-        "description": "string",
-        "createDate": "时间戳",
-        "categoryId": "string",
-        "toc": [],
-        "htmlContent": "string",
-        "thumb": "string",
-        "markdownContent": "string"
+        'title': 'string',
+        'description': 'string',
+        'createDate': '时间戳',
+        'categoryId': 'string',
+        'toc': [],
+        'htmlContent': 'string',
+        'thumb': 'string',
+        'markdownContent': 'string'
       }
       */
       const obj = {
@@ -127,30 +127,30 @@ export default {
         categoryId: this.form.categoryId,
         toc: [],
         htmlContent: html,
-        thumb: this.form.thumb.replace(BaseUrl, ""),
-        markdownContent: markdown,
-      };
+        thumb: this.form.thumb.replace(BaseUrl, ''),
+        markdownContent: markdown
+      }
       if (obj.title && obj.description && obj.categoryId && obj.htmlContent) {
-        if (this.mode === "add") {
+        if (this.mode === 'add') {
           addBlogApi(obj).then(() => {
-            this.$message.success("添加成功!");
-            this.$router.push("/blog/BlogList");
-          });
+            this.$message.success('添加成功!')
+            this.$router.push('/blog/BlogList')
+          })
         } else {
           editBlogApi({ id: this.form.id, data: obj }).then(() => {
-            this.$message.success("编辑成功!");
-            this.$router.push("/blog/BlogList");
-          });
+            this.$message.success('编辑成功!')
+            this.$router.push('/blog/BlogList')
+          })
         }
       } else {
-        this.$message.error("请填写完所有内容!");
+        this.$message.error('请填写完所有内容!')
       }
     },
     editCategoryId() {
-      this.$forceUpdate();
-    },
-  },
-};
+      this.$forceUpdate()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

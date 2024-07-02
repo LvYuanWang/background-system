@@ -190,78 +190,78 @@
 </template>
 
 <script>
-import * as settingApi from "@/api/setting";
-import Upload from "@/components/Upload";
-import { BaseUrl } from "@/urlConfig";
+import * as settingApi from '@/api/setting'
+import Upload from '@/components/Upload'
+import { BaseUrl } from '@/urlConfig'
 export default {
   data() {
     return {
-      btnContent: "编辑",
+      btnContent: '编辑',
       dialogFormVisible: false,
       setting: {
-        siteTitle: "",
-        mail: "",
-        icp: "",
-        avatar: "",
-        favicon: "",
-        githubName: "",
-        github: "",
-        qq: "",
-        qqQrCode: "",
-        weixin: "",
-        weixinQrCode: "",
+        siteTitle: '',
+        mail: '',
+        icp: '',
+        avatar: '',
+        favicon: '',
+        githubName: '',
+        github: '',
+        qq: '',
+        qqQrCode: '',
+        weixin: '',
+        weixinQrCode: ''
       },
       form: {
-        siteTitle: "",
-        mail: "",
-        icp: "",
-        avatar: "",
-        favicon: "",
-        githubName: "",
-        github: "",
-        qq: "",
-        qqQrCode: "",
-        weixin: "",
-        weixinQrCode: "",
-      },
-    };
+        siteTitle: '',
+        mail: '',
+        icp: '',
+        avatar: '',
+        favicon: '',
+        githubName: '',
+        github: '',
+        qq: '',
+        qqQrCode: '',
+        weixin: '',
+        weixinQrCode: ''
+      }
+    }
   },
   components: {
-    Upload,
+    Upload
   },
   created() {
-    this.fetchSettingData();
+    this.fetchSettingData()
   },
   methods: {
     async fetchSettingData() {
-      const { data } = await settingApi.getSetting();
-      data.avatar = BaseUrl + data.avatar;
-      data.qqQrCode = BaseUrl + data.qqQrCode;
-      data.weixinQrCode = BaseUrl + data.weixinQrCode;
-      this.setting = data;
+      const { data } = await settingApi.getSetting()
+      data.avatar = BaseUrl + data.avatar
+      data.qqQrCode = BaseUrl + data.qqQrCode
+      data.weixinQrCode = BaseUrl + data.weixinQrCode
+      this.setting = data
     },
     openEditSetting() {
-      this.dialogFormVisible = true;
-      this.form = { ...this.setting };
-      console.log(this.form);
+      this.dialogFormVisible = true
+      this.form = { ...this.setting }
+      console.log(this.form)
     },
     // 取消编辑
     editSettingCancel() {
-      this.dialogFormVisible = false;
-      this.$message.info("取消编辑成功");
+      this.dialogFormVisible = false
+      this.$message.info('取消编辑成功')
     },
     // 保存编辑
     async editSettingSave() {
-      this.form.avatar = this.form.avatar.replace(BaseUrl, "");
-      this.form.qqQrCode = this.form.qqQrCode.replace(BaseUrl, "");
-      this.form.weixinQrCode = this.form.weixinQrCode.replace(BaseUrl, "");
-      await settingApi.updateSetting(this.form);
-      this.dialogFormVisible = false;
-      this.$message.success("修改成功");
-      this.fetchSettingData();
-    },
-  },
-};
+      this.form.avatar = this.form.avatar.replace(BaseUrl, '')
+      this.form.qqQrCode = this.form.qqQrCode.replace(BaseUrl, '')
+      this.form.weixinQrCode = this.form.weixinQrCode.replace(BaseUrl, '')
+      await settingApi.updateSetting(this.form)
+      this.dialogFormVisible = false
+      this.$message.success('修改成功')
+      this.fetchSettingData()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

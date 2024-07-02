@@ -1,15 +1,15 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 // 获取全局配置
 export function getSetting() {
-    return request.get("api/setting");
+  return request.get('api/setting')
 }
 
 // 修改全局配置
 export function updateSetting(data) {
-    return request({
-        url: "api/setting",
-        method: "put",
-        data
-    });
+  return request({
+    url: 'api/setting',
+    method: 'put',
+    data
+  })
 }

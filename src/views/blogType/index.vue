@@ -102,23 +102,23 @@
 </template>
 
 <script>
-import * as blogTypeApi from "@/api/blogType.js";
+import * as blogTypeApi from '@/api/blogType.js'
 export default {
   data() {
     return {
       blogTypeList: [],
-      input: "",
-      select: "1",
+      input: '',
+      select: '1',
       listLoading: false,
       dialogFormVisible: false,
       form: {
-        name: "",
-        order: "",
-      },
-    };
+        name: '',
+        order: ''
+      }
+    }
   },
   created() {
-    this.fetchBlogTypeData(this.select);
+    this.fetchBlogTypeData(this.select)
   },
   methods: {
     // 获取文章分类数据
@@ -130,75 +130,75 @@ export default {
     // },
     // 选择文章分类的序号
     async fetchBlogTypeData(orderNumber) {
-      this.listLoading = true;
-      this.blogTypeList = [];
-      const resp = await blogTypeApi.getBlogType();
+      this.listLoading = true
+      this.blogTypeList = []
+      const resp = await blogTypeApi.getBlogType()
       resp.data.forEach((item) => {
-        if (item.order == orderNumber) {
-          this.blogTypeList.push(item);
+        if (item.order === orderNumber) {
+          this.blogTypeList.push(item)
         }
-      });
-      this.listLoading = false;
+      })
+      this.listLoading = false
     },
     // 编辑文章分类
     async editBlogTypeHandle({ id }) {
-      this.dialogFormVisible = true;
-      const resp = await blogTypeApi.findOneBlogType(id);
-      this.form = resp.data;
+      this.dialogFormVisible = true
+      const resp = await blogTypeApi.findOneBlogType(id)
+      this.form = resp.data
     },
     // 删除文章分类
     deleteBlogTypeHandle({ id }) {
       this.$confirm(
-        "删除分类后,分类下的所有文章将变为无分类状态,是否继续?",
-        "是否确认删除该分类",
+        '删除分类后,分类下的所有文章将变为无分类状态,是否继续?',
+        '是否确认删除该分类',
         {
-          confirmButtonText: "删除",
-          cancelButtonText: "取消",
-          type: "warning",
+          confirmButtonText: '删除',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
       )
         .then(() => {
           blogTypeApi.delBlogType(id).then(() => {
-            this.$message.success("删除成功!!");
-            this.fetchBlogTypeData(this.select);
-          });
+            this.$message.success('删除成功!!')
+            this.fetchBlogTypeData(this.select)
+          })
         })
         .catch(() => {
-          this.$message.info("拉机,就知道你不敢删😀");
-        });
+          this.$message.info('拉机,就知道你不敢删😀')
+        })
     },
     // 添加文章分类
     async addBlogTypeData() {
-      if (this.input === "") {
-        this.$message.error("分类不能为空,请填写分类!!");
+      if (this.input === '') {
+        this.$message.error('分类不能为空,请填写分类!!')
       } else {
         await blogTypeApi.addBlogType({
           name: this.input,
-          order: this.select,
-        });
-        this.$message.success("添加成功!!");
-        this.input = "";
-        this.fetchBlogTypeData(this.select);
+          order: this.select
+        })
+        this.$message.success('添加成功!!')
+        this.input = ''
+        this.fetchBlogTypeData(this.select)
       }
     },
     // 编辑分类弹窗取消按钮
     // 取消
     cancelClick() {
-      this.dialogFormVisible = false;
-      this.$message.info("已取消修改");
+      this.dialogFormVisible = false
+      this.$message.info('已取消修改')
     },
     // 确认
     async confirmClick() {
-      const resp = await blogTypeApi.updateOneBlogType({
-        id: this.form.id,
-        data: this.form,
-      });
-      this.fetchBlogTypeData(this.select);
-      this.dialogFormVisible = false;
-      this.$message.success("修改成功!");
-    },
-  },
-};
+      // const resp = await blogTypeApi.updateOneBlogType({
+      //   id: this.form.id,
+      //   data: this.form
+      // })
+      this.fetchBlogTypeData(this.select)
+      this.dialogFormVisible = false
+      this.$message.success('修改成功!')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

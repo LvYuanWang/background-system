@@ -86,109 +86,109 @@
 </template>
 
 <script>
-import { getCaptcha } from "@/api/captcha";
+import { getCaptcha } from '@/api/captcha'
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
-    const validatePassword = (rule, value, callback) => {
-      if (value === undefined) {
-        value = "";
-      }
-      const reg = /^[a-zA-Z]\w{5,17}$/;
-      if (!reg.test(value)) {
-        callback(
-          new Error(
-            "密码必须以字母开头,长度在6~18之间,只能包含字符、数字和下划线"
-          )
-        );
-      } else {
-        callback();
-      }
-    };
+    // const validatePassword = (rule, value, callback) => {
+    //   if (value === undefined) {
+    //     value = ''
+    //   }
+    //   const reg = /^[a-zA-Z]\w{5,17}$/
+    //   if (!reg.test(value)) {
+    //     callback(
+    //       new Error(
+    //         '密码必须以字母开头,长度在6~18之间,只能包含字符、数字和下划线'
+    //       )
+    //     )
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
-      svg: "",
+      svg: '',
       loginForm: {
-        loginId: "",
-        loginPwd: "",
-        captcha: "",
-        checked: true,
+        loginId: '',
+        loginPwd: '',
+        captcha: '',
+        checked: true
       },
       loginRules: {
         loginId: [
-          { required: true, trigger: "blur", message: "请输入管理员账号" },
+          { required: true, trigger: 'blur', message: '请输入管理员账号' }
         ],
         loginPwd: [
-          { required: true, trigger: "blur", message: "请输入管理员密码" },
-          // { trigger: "blur", validator: validatePassword },
+          { required: true, trigger: 'blur', message: '请输入管理员密码' }
+          // { trigger: 'blur', validator: validatePassword },
         ],
-        captcha: [{ required: true, trigger: "blur", message: "请输入验证码" }],
+        captcha: [{ required: true, trigger: 'blur', message: '请输入验证码' }]
       },
       loading: false,
-      passwordType: "password",
-      redirect: undefined,
-    };
+      passwordType: 'password',
+      redirect: undefined
+    }
   },
   watch: {
     $route: {
       handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query && route.query.redirect
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   created() {
-    this.fetchCaptcha();
+    this.fetchCaptcha()
   },
   methods: {
     async fetchCaptcha() {
-      const resp = await getCaptcha();
-      this.svg = resp;
+      const resp = await getCaptcha()
+      this.svg = resp
     },
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.loginPwd.focus();
-      });
+        this.$refs.loginPwd.focus()
+      })
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           // 进入此 if 说明表单的验证是通过了的
-          this.loading = true;
-          this.loginForm.remember = this.loginForm.checked ? 7 : 1;
+          this.loading = true
+          this.loginForm.remember = this.loginForm.checked ? 7 : 1
           this.$store
-            .dispatch("user/login", this.loginForm)
+            .dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
             })
             .catch((res) => {
-              if (typeof res === "string") {
+              if (typeof res === 'string') {
                 // 说明是验证码错误
-                const { msg } = JSON.parse(res);
-                this.$message.error(msg);
+                const { msg } = JSON.parse(res)
+                this.$message.error(msg)
               } else {
                 // 说明是账号或者密码错误
-                this.$message.error("账号密码错误");
+                this.$message.error('账号密码错误')
               }
-              this.fetchCaptcha();
-              this.loginForm.captcha = "";
-              this.loading = false;
-            });
+              this.fetchCaptcha()
+              this.loginForm.captcha = ''
+              this.loading = false
+            })
         } else {
           // 说明表单有某些字段的验证没有通过
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

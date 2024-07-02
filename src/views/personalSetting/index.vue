@@ -65,50 +65,50 @@
 </template>
 
 <script>
-import * as adminApi from "@/api/user";
+import * as adminApi from '@/api/user'
 export default {
   data() {
-    let validateloginPwd = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
+    const validateloginPwd = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
       } else if (value !== this.adminInfo.loginPwd) {
-        callback(new Error("两次输入密码不一致"));
+        callback(new Error('两次输入密码不一致'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
-      key: "",
+      key: '',
       adminInfo: {
-        id: "", // 用户id
-        name: "", // 用户名
-        loginId: "", // 登录账号
-        oldLoginPwd: "", // 旧密码
-        loginPwd: "", // 新密码
-        loginPwdConfirm: "", // 新密码确认
+        id: '', // 用户id
+        name: '', // 用户名
+        loginId: '', // 登录账号
+        oldLoginPwd: '', // 旧密码
+        loginPwd: '', // 新密码
+        loginPwdConfirm: '' // 新密码确认
       },
       // 表单验证规则
       setRules: {
         oldLoginPwd: [
-          { required: true, trigger: "blur", message: "请输入旧密码" },
+          { required: true, trigger: 'blur', message: '请输入旧密码' }
         ],
         loginPwd: [
-          { required: true, trigger: "blur", message: "请输入新密码" },
+          { required: true, trigger: 'blur', message: '请输入新密码' }
         ],
         loginPwdConfirm: [
-          { required: true, trigger: "blur", message: "请确认新密码" },
-          { validator: validateloginPwd, trigger: "blur" },
-        ],
-      },
-    };
+          { required: true, trigger: 'blur', message: '请确认新密码' },
+          { validator: validateloginPwd, trigger: 'blur' }
+        ]
+      }
+    }
   },
   created() {
-    this.fetchAdminInfo();
+    this.fetchAdminInfo()
   },
   methods: {
     async fetchAdminInfo() {
-      const { data } = await adminApi.getInfoApi();
-      this.adminInfo = data;
+      const { data } = await adminApi.getInfoApi()
+      this.adminInfo = data
     },
     async handleClick() {
       if (
@@ -116,30 +116,30 @@ export default {
         this.adminInfo.oldLoginPwd &&
         this.adminInfo.loginPwd
       ) {
-        if (this.key === "LYW123456") {
-          const resp = await adminApi.updateInfoApi(this.adminInfo);
-          if (typeof resp === "string") {
-            const { msg } = JSON.parse(resp);
-            this.$message.error(msg);
+        if (this.key === 'LYW123456') {
+          const resp = await adminApi.updateInfoApi(this.adminInfo)
+          if (typeof resp === 'string') {
+            const { msg } = JSON.parse(resp)
+            this.$message.error(msg)
           } else {
-            this.$message.success("修改成功");
+            this.$message.success('修改成功')
             // 12345678
-            this.$store.dispatch("user/logout").then(() => {
-              this.$router.push(`/login?redirect=${this.$route.fullPath}`);
-            });
+            this.$store.dispatch('user/logout').then(() => {
+              this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+            })
           }
         } else {
-          this.$message.error("Key值错误或Key值为空!!");
+          this.$message.error('Key值错误或Key值为空!!')
         }
       } else {
-        this.$message.error("请填写完整信息!!");
+        this.$message.error('请填写完整信息!!')
       }
     },
     handleBack() {
-      this.$router.push("/");
-    },
-  },
-};
+      this.$router.push('/')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

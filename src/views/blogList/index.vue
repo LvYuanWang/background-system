@@ -124,9 +124,9 @@
 
 <script>
 // 端口号需更改的文件: vue.config.js   urlConfig.js  config.default.js
-import { getBlog, deleteBlogApi } from "@/api/blog.js";
-import { formatDate } from "@/utils/tools.js";
-import { BaseUrl, siteClientUrl } from "@/urlConfig.js";
+import { getBlog, deleteBlogApi } from '@/api/blog.js'
+import { formatDate } from '@/utils/tools.js'
+import { BaseUrl, siteClientUrl } from '@/urlConfig.js'
 export default {
   data() {
     return {
@@ -136,82 +136,82 @@ export default {
       currentPage: 1, // 当前页码,默认进来是第一页
       totalPage: 0, // 总页数
       count: 0, // 总条数
-      pageCurrentPage: 1, // 分页栏的当前页码
-    };
+      pageCurrentPage: 1 // 分页栏的当前页码
+    }
   },
   created() {
-    this.fetchBlogData();
+    this.fetchBlogData()
   },
   methods: {
     async fetchBlogData() {
-      const resp = await getBlog(this.currentPage, this.eachPage);
-      this.blogList = resp.data.rows;
+      const resp = await getBlog(this.currentPage, this.eachPage)
+      this.blogList = resp.data.rows
       this.blogList.forEach((item) => {
-        item.createDate = formatDate(item.createDate);
-        item.thumb = BaseUrl + item.thumb;
-        this.srcThumbList.push(item.thumb);
-      });
-      this.count = resp.data.total;
-      this.totalPage = Math.ceil(this.count / this.eachPage); // 向上取整
+        item.createDate = formatDate(item.createDate)
+        item.thumb = BaseUrl + item.thumb
+        this.srcThumbList.push(item.thumb)
+      })
+      this.count = resp.data.total
+      this.totalPage = Math.ceil(this.count / this.eachPage) // 向上取整
       if (this.currentPage > this.totalPage) {
-        this.currentPage = this.totalPage;
+        this.currentPage = this.totalPage
       }
     },
     // 跳转到文章标题
     goToTitleHandle(blogInfo) {
-      window.open(`${siteClientUrl}/article/detail/${blogInfo.id}`);
+      window.open(`${siteClientUrl}/article/detail/${blogInfo.id}`)
     },
     // 编辑文章
     editBlog(blogInfo) {
-      this.$router.push(`/blog/editBlog/${blogInfo.id}`);
+      this.$router.push(`/blog/editBlog/${blogInfo.id}`)
     },
     // 删除文章
     deleteBlog(blogInfo) {
       this.$confirm(
-        "删除该文章后,该文章下的所有评论将会被一同删除, 是否继续?",
-        "是否确认删除该文章",
+        '删除该文章后,该文章下的所有评论将会被一同删除, 是否继续?',
+        '是否确认删除该文章',
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
       )
         .then(() => {
           deleteBlogApi(blogInfo.id).then(() => {
-            this.fetchBlogData();
+            this.fetchBlogData()
             this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-          });
+              type: 'success',
+              message: '删除成功!'
+            })
+          })
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     currentChangeHandle(pageNumber) {
-      this.currentPage = parseInt(pageNumber);
-      this.fetchBlogData();
+      this.currentPage = parseInt(pageNumber)
+      this.fetchBlogData()
     },
     sizeChangeHandle(pageSize) {
-      this.eachPage = parseInt(pageSize);
-      this.currentPage = 1;
+      this.eachPage = parseInt(pageSize)
+      this.currentPage = 1
       // this.pageCurrentPage = 1;
-      this.fetchBlogData();
+      this.fetchBlogData()
     },
     // 上一页
     prevClickHandle() {
-      this.currentPage -= 1;
+      this.currentPage -= 1
     },
     // 下一页
     nextClickHandle() {
-      this.currentPage += 1;
-    },
-  },
-};
+      this.currentPage += 1
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

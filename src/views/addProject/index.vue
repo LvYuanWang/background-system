@@ -10,10 +10,10 @@
     <span class="block">项目描述(每一项描述以英文逗号分隔)</span>
     <div>
       <el-input
-        type="textarea"
         :rows="5"
         v-model="description"
         placeholder="请输入项目描述信息"
+        type="textarea"
       ></el-input>
     </div>
 
@@ -55,25 +55,25 @@
 </template>
 
 <script>
-import Upload from "@/components/Upload";
-import { addProject } from "@/api/project";
-import { BaseUrl } from "@/urlConfig";
+import Upload from '@/components/Upload'
+import { addProject } from '@/api/project'
+import { BaseUrl } from '@/urlConfig'
 export default {
   data() {
     return {
-      description: "",
+      description: '',
       form: {
-        name: "",
+        name: '',
         description: [],
-        url: "",
-        github: "",
-        thumb: "",
-        order: 1,
-      },
-    };
+        url: '',
+        github: '',
+        thumb: '',
+        order: 1
+      }
+    }
   },
   components: {
-    Upload,
+    Upload
   },
   methods: {
     async addProjectClickHandle() {
@@ -83,18 +83,18 @@ export default {
         this.form.url &&
         this.form.thumb
       ) {
-        this.form.order = parseInt(this.form.order);
-        this.form.description = this.form.description.split(",");
-        this.form.thumb = this.form.thumb.replace(BaseUrl, "");
-        await addProject(this.form);
-        this.$router.push("/project/projectList");
-        this.$message.success("修改成功");
+        this.form.order = parseInt(this.form.order)
+        this.form.description = this.form.description.split(',')
+        this.form.thumb = this.form.thumb.replace(BaseUrl, '')
+        await addProject(this.form)
+        this.$router.push('/project/projectList')
+        this.$message.success('修改成功')
       } else {
-        this.$message.error("请填写完所有内容!");
+        this.$message.error('请填写完所有内容!')
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

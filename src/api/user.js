@@ -13,7 +13,7 @@ export function loginApi(data) {
 export function getInfoApi() {
   return request({
     url: '/api/admin/whoami',
-    method: 'get',
+    method: 'get'
   })
 }
 
